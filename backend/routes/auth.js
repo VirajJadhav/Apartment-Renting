@@ -12,9 +12,8 @@ router.route("/login").post(async (req, res) => {
       `select * from user where user_email="${user_email}"`,
       function (error, result) {
         if (error)
-          return res.status(400).json({ result: error.message, error: true });
-        let data = [];
-        data = result;
+          return res.status(500).json({ result: error.message, error: true });
+        let data = result;
         if (data.length === 1) {
           if (user_password === data[0].user_password)
             return res.status(200).json({ result: data[0], error: false });
@@ -30,7 +29,7 @@ router.route("/login").post(async (req, res) => {
     );
   } catch (error) {
     console.log(error.message);
-    return res.status(400);
+    return res.status(400).json({ result: error.message, error: true });
   }
 });
 
@@ -49,17 +48,16 @@ router.route("/signup").post(async (req, res) => {
       `select * from user where user_email="${user_email}"`,
       function (error, result) {
         if (error)
-          return res.status(400).json({ result: error.message, error: true });
-        let data = [],
+          return res.status(500).json({ result: error.message, error: true });
+        let data = result,
           typeTable = "";
-        data = result;
         if (data.length === 0) {
           connection.query(
             `insert into user values("${user_email}", "${user_password}", "${user_type}")`,
             function (error, result) {
               if (error)
                 return res
-                  .status(400)
+                  .status(500)
                   .json({ result: error.message, error: true });
             }
           );
@@ -69,7 +67,7 @@ router.route("/signup").post(async (req, res) => {
             function (error, result) {
               if (error)
                 return res
-                  .status(400)
+                  .status(500)
                   .json({ result: error.message, error: true });
             }
           );
@@ -86,7 +84,7 @@ router.route("/signup").post(async (req, res) => {
     );
   } catch (error) {
     console.log(error.message);
-    return res.status(400);
+    return res.status(400).json({ result: error.message, error: true });
   }
 });
 
