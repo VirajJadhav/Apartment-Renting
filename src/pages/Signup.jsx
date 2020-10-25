@@ -11,7 +11,10 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+import Navbar from "../components/Navbar";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Signup() {
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [user_name, setUserName] = useState("");
   const [user_email, setUserEmail] = useState("");
@@ -90,130 +95,151 @@ export default function Signup() {
       user_name,
     };
     // console.log(data);
+    axios
+      .post(BACKEND_URL + "/auth/signup", data)
+      .then((response) => {
+        const res = response.data;
+        if (!res.error) {
+          history.push("/");
+        } else {
+          alert(res.result);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="user_name"
-                name="user_name"
-                variant="outlined"
-                required
-                fullWidth
-                value={user_name}
-                onChange={handleChange}
-                label="Full Name"
-                autoFocus
-              />
+    <div>
+      <Navbar />
+      <Container component="main" maxWidth="sm">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="user_name"
+                  name="user_name"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  value={user_name}
+                  onChange={handleChange}
+                  label="Full Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  name="user_type"
+                  select
+                  fullWidth
+                  label="Select"
+                  value={user_type}
+                  onChange={handleChange}
+                  helperText="Please select your role"
+                >
+                  <MenuItem value="O">Owner</MenuItem>
+                  <MenuItem value="T">Tenant</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  name="user_address"
+                  label="Address"
+                  fullWidth
+                  value={user_address}
+                  onChange={handleChange}
+                  multiline
+                  rows={3}
+                  required
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  name="user_pincode"
+                  label="Pincode"
+                  variant="filled"
+                  type="number"
+                  fullWidth
+                  required
+                  onChange={handleChange}
+                  value={user_pincode}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  name="user_contact"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  value={user_contact}
+                  onChange={handleChange}
+                  label="Contact Number"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="Email Address"
+                  name="email"
+                  value={user_email}
+                  onChange={handleChange}
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  value={user_password}
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="user_type"
-                select
-                fullWidth
-                label="Select"
-                value={user_type}
-                onChange={handleChange}
-                helperText="Please select your role"
-              >
-                <MenuItem value="O">Owner</MenuItem>
-                <MenuItem value="T">Tenant</MenuItem>
-              </TextField>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSubmit}
+            >
+              Sign Up
+            </Button>
+            <Grid
+              container
+              justify="center"
+              direction="row"
+              alignItems="center"
+            >
+              <Grid item>
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="user_address"
-                label="Address"
-                fullWidth
-                value={user_address}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                required
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="user_pincode"
-                label="Pincode"
-                variant="filled"
-                type="number"
-                fullWidth
-                required
-                onChange={handleChange}
-                value={user_pincode}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="user_contact"
-                variant="outlined"
-                required
-                fullWidth
-                value={user_contact}
-                onChange={handleChange}
-                label="Contact Number"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Email Address"
-                name="email"
-                value={user_email}
-                onChange={handleChange}
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                value={user_password}
-                onChange={handleChange}
-                autoComplete="current-password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSubmit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="center" direction="row" alignItems="center">
-            <Grid item>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }

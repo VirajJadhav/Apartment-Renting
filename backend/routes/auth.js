@@ -15,12 +15,12 @@ router.route("/login").post(async (req, res) => {
           return res.status(500).json({ result: error.message, error: true });
         let data = result;
         if (data.length === 1) {
-          if (user_password === data[0].user_password)
+          if (String(user_password) === data[0].user_password)
             return res.status(200).json({ result: data[0], error: false });
           else
             return res
               .status(200)
-              .json({ result: "Invalid password !", error: false });
+              .json({ result: "Invalid password !", error: true });
         } else
           return res
             .status(200)

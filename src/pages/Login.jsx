@@ -13,6 +13,7 @@ import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import Navbar from "../components/Navbar";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,7 +60,9 @@ export default function Login() {
       .then((response) => {
         const res = response.data;
         if (!res.error) {
-          history.push("/owner");
+          localStorage.setItem("user", res.result.user_email);
+          if (res.result.user_type === "O") history.push("/owner");
+          else if (res.result.user_type === "T") history.push("/tenant");
         } else {
           alert(res.result);
         }
@@ -70,59 +73,67 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Log in
-        </Typography>
-        <form className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            type="email"
-            required
-            fullWidth
-            label="Email Address"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            value={password}
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            onChange={handleChange}
-            autoComplete="current-password"
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSubmit}
-          >
-            Log In
-          </Button>
-          <Grid container justify="center" direction="row" alignItems="center">
-            <Grid item>
-              <Link to="/signup" style={{ textDecoration: "none" }}>
-                {"Don't have an account? Sign Up"}
-              </Link>
+    <div>
+      <Navbar />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Log in
+          </Typography>
+          <form className={classes.form}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              type="email"
+              required
+              fullWidth
+              label="Email Address"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              value={password}
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              onChange={handleChange}
+              autoComplete="current-password"
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSubmit}
+            >
+              Log In
+            </Button>
+            <Grid
+              container
+              justify="center"
+              direction="row"
+              alignItems="center"
+            >
+              <Grid item>
+                <Link to="/signup" style={{ textDecoration: "none" }}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }
