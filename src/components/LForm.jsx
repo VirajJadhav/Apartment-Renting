@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   TextField,
@@ -139,7 +139,7 @@ export default function LForm(props) {
                       value={props.start_date}
                       onChange={props.handleStartDateChange}
                       KeyboardButtonProps={{
-                        "aria-label": "change date",
+                        "aria-label": "change date 1",
                       }}
                     />
                   </MuiPickersUtilsProvider>
@@ -155,7 +155,7 @@ export default function LForm(props) {
                       value={props.due_date}
                       onChange={props.handleDueDateChange}
                       KeyboardButtonProps={{
-                        "aria-label": "change date",
+                        "aria-label": "change date 2",
                       }}
                     />
                   </MuiPickersUtilsProvider>

@@ -84,15 +84,15 @@ class LeaseForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     event.persist();
-    const req__start_date = this.state.start_date.toISOString().split("T")[0];
-    const req_due_date = this.state.start_date.toISOString().split("T")[0];
+    const req_start_date = this.state.start_date.toISOString().split("T")[0];
+    const req_due_date = this.state.due_date.toISOString().split("T")[0];
     const data = {
       owner_email: this.state.owner_email,
       tenant_email: this.state.tenant.tenant_email,
       buildingID: this.state.building.buildingID,
       floor_number: Number(this.state.floor_number),
       flat_number: Number(this.state.flat_number),
-      start_date: String(req__start_date),
+      start_date: String(req_start_date),
       due_date: String(req_due_date),
       rent_amount: Number(this.state.rent_amount),
     };

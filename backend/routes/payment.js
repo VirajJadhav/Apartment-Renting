@@ -39,10 +39,10 @@ router.route("/getPaymentInfo/:flatID/:buildingID").get(async (req, res) => {
 });
 
 router.route("/updatePayment").post(async (req, res) => {
-  const { paymentID, paid } = req.body;
+  const { paymentID, paid, rent_amount, due_date } = req.body;
   try {
     await connection.query(
-      `update payment set paid="${paid}" where paymentID=${paymentID}`,
+      `update payment set paid="${paid}", rent_amount=${rent_amount}, due_date="${due_date}" where paymentID=${paymentID}`,
       function (error, result) {
         if (error)
           return res.status(500).json({ result: error.message, error: true });

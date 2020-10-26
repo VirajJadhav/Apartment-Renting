@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../components/Navbar";
 import OwnerTable from "../components/OwnerTable";
+import EditDialog from "../components/EditDialog";
 import { Button, Container } from "@material-ui/core";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -10,7 +11,14 @@ class Owner extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       owner_email: "",
+      allData: [],
+      data: [],
+      due_date: new Date(),
+      rent_amount: "",
+      paid: "",
+      paymentID: "",
     };
   }
   async componentDidMount() {
@@ -19,21 +27,90 @@ class Owner extends Component {
       const response = await axios.get(
         BACKEND_URL + "/owner/getFlatPaymentDetails/" + email
       );
-      this.setState({
-        owner_email: email,
-      });
-      console.log(response.data);
-      // if(!response.data.error) {
-
-      // }
+      if (!response.data.error) {
+        const data = response.data.result.map((d, index) => {
+          return [
+            d.tenant_email,
+            d.start_date.split("T")[0],
+            d.due_date.split("T")[0],
+            d.rent_amount,
+            d.paid === "N" ? "No" : "Yes",
+          ];
+        });
+        this.setState({
+          owner_email: email,
+          allData: response.data.result,
+          data,
+        });
+      } else {
+        alert(response.data.result);
+      }
     } catch (error) {
       console.log(error.message);
     }
   }
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+  handleDueDateChange = (date) => {
+    this.setState({
+      due_date: date.toISOString(),
+    });
+  };
+  handleEdit = (index) => {
+    this.handleModal();
+    const reqData = this.state.allData[index];
+    this.setState({
+      due_date: reqData.due_date,
+      rent_amount: reqData.rent_amount,
+      paid: reqData.paid,
+      paymentID: reqData.paymentID,
+    });
+  };
+  handleModal = () => {
+    this.setState({
+      open: !this.state.open,
+      due_date: new Date(),
+      rent_amount: "",
+      paid: "",
+      paymentID: "",
+    });
+  };
+  modalSubmit = () => {
+    const req_due_date = this.state.due_date.substring(0, 10);
+    const paymentID = Number(this.state.paymentID);
+    const data = {
+      paid: this.state.paid,
+      rent_amount: Number(this.state.rent_amount),
+      due_date: req_due_date,
+      paymentID,
+    };
+    axios
+      .post(BACKEND_URL + "/payment/updatePayment", data)
+      .then((response) => {
+        if (response.data.error) console.log(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    this.handleModal();
+  };
   render() {
     return (
       <div>
         <Navbar />
+        <EditDialog
+          handleModal={this.handleModal}
+          open={this.state.open}
+          modalSubmit={this.modalSubmit}
+          due_date={this.state.due_date}
+          rent_amount={this.state.rent_amount}
+          paid={this.state.paid}
+          handleChange={this.handleChange}
+          handleDueDateChange={this.handleDueDateChange}
+        />
         <Link to="/building_form" style={{ textDecoration: "none" }}>
           <Button className="my-4 mx-4" color="inherit" variant="contained">
             Add Building Info
@@ -45,11 +122,8 @@ class Owner extends Component {
           </Button>
         </Link>
         <Container maxWidth="lg">
-          <OwnerTable />
+          <OwnerTable data={this.state.data} handleEdit={this.handleEdit} />
         </Container>
-        {/* <div className="container-sm">
-          <OwnerTable />
-        </div> */}
       </div>
     );
   }
