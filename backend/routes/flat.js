@@ -27,6 +27,8 @@ router.route("/insertInfo").post(async (req, res) => {
     floor_number,
     flat_number,
     start_date,
+    due_date,
+    rent_amount,
   } = req.body;
   try {
     await connection.query(
@@ -34,6 +36,17 @@ router.route("/insertInfo").post(async (req, res) => {
       function (error, result) {
         if (error)
           return res.status(500).json({ result: error.message, error: true });
+        const data = JSON.parse(JSON.stringify(result));
+        const flatID = data["insertId"];
+        connection.query(
+          `insert into payment(flatID, buildingID, paid, due_date, rent_amount) values(${flatID}, ${buildingID}, 'N', "${due_date}", ${rent_amount})`,
+          function (error, result) {
+            if (error)
+              return res
+                .status(500)
+                .json({ result: error.message, error: true });
+          }
+        );
         return res
           .status(200)
           .json({ result: "Data inserted into flats !", error: false });

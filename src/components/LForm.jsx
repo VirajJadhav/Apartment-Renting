@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   TextField,
@@ -8,6 +8,11 @@ import {
   Container,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -25,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BForm(props) {
+export default function LForm(props) {
   const classes = useStyles();
 
   const building_info = props.building_info;
@@ -77,6 +82,83 @@ export default function BForm(props) {
                       />
                     )}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="floor_number"
+                    label="Floor Number"
+                    variant="filled"
+                    type="number"
+                    fullWidth
+                    required
+                    onChange={props.handleChange}
+                    value={props.floor_number}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="flat_number"
+                    label="Flat Number"
+                    variant="filled"
+                    type="number"
+                    fullWidth
+                    required
+                    onChange={props.handleChange}
+                    value={props.flat_number}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="rent_amount"
+                    label="Rent Amount"
+                    variant="filled"
+                    type="number"
+                    fullWidth
+                    required
+                    onChange={props.handleChange}
+                    value={props.rent_amount}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog-1"
+                      label="Start Rent Date"
+                      format="yyyy-MM-dd"
+                      fullWidth
+                      value={props.start_date}
+                      onChange={props.handleStartDateChange}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog-2"
+                      label="Expected Due Date"
+                      format="yyyy-MM-dd"
+                      fullWidth
+                      value={props.due_date}
+                      onChange={props.handleDueDateChange}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
                 </Grid>
               </Grid>
               <Button
