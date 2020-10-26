@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Signup(props) {
+export default function BForm(props) {
   const classes = useStyles();
 
   return (

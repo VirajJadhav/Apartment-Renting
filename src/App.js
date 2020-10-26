@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Owner from "./pages/Owner";
 import Tenant from "./pages/Tenant";
 import BuildingForm from "./pages/BuildingForm";
+import LeaseForm from "./pages/LeaseForm";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/owner" component={Owner} />
         <Route exact path="/tenant" component={Tenant} />
         <Route exact path="/building_form" component={BuildingForm} />
+        <Route exact path="/lease_form" component={LeaseForm} />
       </Switch>
     </Router>
   );

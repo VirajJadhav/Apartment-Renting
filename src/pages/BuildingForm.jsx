@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Navbar from "../components/Navbar";
-import Form from "../components/Form";
+import BForm from "../components/BForm";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
@@ -49,7 +49,7 @@ class BuildingForm extends Component {
     return (
       <div>
         <Navbar />
-        <Form
+        <BForm
           building_name={this.state.building_name}
           building_street={this.state.building_street}
           building_pincode={this.state.building_pincode}

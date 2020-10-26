@@ -37,6 +37,11 @@ class Owner extends Component {
             Add Building Info
           </Button>
         </Link>
+        <Link to="/lease_form" style={{ textDecoration: "none" }}>
+          <Button className="my-4 mx-4" color="inherit" variant="contained">
+            Lease Apartment
+          </Button>
+        </Link>
       </div>
     );
   }
