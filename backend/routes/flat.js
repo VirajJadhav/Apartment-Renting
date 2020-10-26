@@ -1,6 +1,26 @@
 const router = require("express").Router();
 const connection = require("../config/db");
 
+router.route("/deleteRentRelation").post(async (req, res) => {
+  const flatID = req.body.flatID;
+  try {
+    await connection.query(
+      `delete from flats where flatID=${flatID}`,
+      function (error, result) {
+        if (error)
+          return res.status(500).json({ result: error.message, error: true });
+        return res.status(200).json({
+          result: "Rent relation between owner and tenant removed !",
+          error: false,
+        });
+      }
+    );
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({ result: error.message, error: true });
+  }
+});
+
 router.route("/getInfo/:flatID").get(async (req, res) => {
   const flatID = req.params.flatID;
   try {

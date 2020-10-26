@@ -11,7 +11,7 @@ import {
   TableRow,
   withStyles,
 } from "@material-ui/core";
-import { Edit as EditIcon } from "@material-ui/icons";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   root: {
@@ -47,6 +47,7 @@ const columns = [
   "Rent Amount",
   "Paid",
   "Edit",
+  "Delete",
 ];
 
 export default function OwnerTable(props) {
@@ -105,6 +106,13 @@ export default function OwnerTable(props) {
                       <EditIcon
                         color="primary"
                         onClick={() => props.handleEdit(index)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </TableCell>
+                    <TableCell align="left">
+                      <DeleteIcon
+                        color="error"
+                        onClick={() => props.handleDeleteModal(index)}
                         style={{ cursor: "pointer" }}
                       />
                     </TableCell>

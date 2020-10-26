@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Navbar from "../components/Navbar";
 import OwnerTable from "../components/OwnerTable";
 import EditDialog from "../components/EditDialog";
+import DeleteDialog from "../components/DeleteDialog";
 import { Button, Container } from "@material-ui/core";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -11,6 +12,7 @@ class Owner extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      deleteOpen: false,
       open: false,
       owner_email: "",
       allData: [],
@@ -19,6 +21,7 @@ class Owner extends Component {
       rent_amount: "",
       paid: "",
       paymentID: "",
+      deleteIndex: "",
     };
   }
   async componentDidMount() {
@@ -69,6 +72,31 @@ class Owner extends Component {
       paymentID: reqData.paymentID,
     });
   };
+  handleDeleteModal = (index) => {
+    if (!isNaN(index)) {
+      this.setState({
+        deleteIndex: index,
+      });
+    }
+    this.setState({
+      deleteOpen: !this.state.deleteOpen,
+    });
+  };
+  handleDeleteSubmit = () => {
+    const flatID = this.state.allData[this.state.deleteIndex].flatID;
+    axios
+      .post(BACKEND_URL + "/flat/deleteRentRelation", { flatID })
+      .then((response) => {
+        console.log(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    this.setState({
+      deleteIndex: "",
+    });
+    this.handleDeleteModal();
+  };
   handleModal = () => {
     this.setState({
       open: !this.state.open,
@@ -111,6 +139,11 @@ class Owner extends Component {
           handleChange={this.handleChange}
           handleDueDateChange={this.handleDueDateChange}
         />
+        <DeleteDialog
+          handleDeleteModal={this.handleDeleteModal}
+          deleteOpen={this.state.deleteOpen}
+          handleDeleteSubmit={this.handleDeleteSubmit}
+        />
         <Link to="/building_form" style={{ textDecoration: "none" }}>
           <Button className="my-4 mx-4" color="inherit" variant="contained">
             Add Building Info
@@ -121,8 +154,12 @@ class Owner extends Component {
             Lease Apartment
           </Button>
         </Link>
-        <Container maxWidth="lg">
-          <OwnerTable data={this.state.data} handleEdit={this.handleEdit} />
+        <Container maxWidth="xl">
+          <OwnerTable
+            data={this.state.data}
+            handleEdit={this.handleEdit}
+            handleDeleteModal={this.handleDeleteModal}
+          />
         </Container>
       </div>
     );

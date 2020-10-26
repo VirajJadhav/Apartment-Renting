@@ -16,7 +16,7 @@ router.route("/getAllInfo").get(async (req, res) => {
 });
 
 router.route("/getInfo/:buildingID").get(async (req, res) => {
-  const buildingID = req.params.buildingID;
+  const buildingID = Number(req.params.buildingID);
   try {
     await connection.query(
       `select * from building where buildingID=${buildingID}`,

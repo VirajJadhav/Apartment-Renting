@@ -3,7 +3,6 @@ const connection = require("../config/db");
 
 router.route("/getFlatPaymentDetails/:email").get(async (req, res) => {
   const owner_email = req.params.email;
-  // console.log(owner_email);
   try {
     await connection.query(
       `select * from flats inner join payment on flats.flatID = payment.flatID and flats.buildingID = payment.buildingID where flats.owner_email="${owner_email}"`,
@@ -60,11 +59,11 @@ router.route("/getOwnerInfo/:email").get(async (req, res) => {
   const owner_email = req.params.email;
   try {
     await connection.query(
-      `select * from owner where owner_email=${owner_email}`,
+      `select * from owner where owner_email="${owner_email}"`,
       function (error, result) {
         if (error)
           return res.status(500).json({ result: error.message, error: true });
-        let data = result;
+        let data = result.length === 0 ? [] : result[0];
         return res.status(200).json({ result: data, error: false });
       }
     );
