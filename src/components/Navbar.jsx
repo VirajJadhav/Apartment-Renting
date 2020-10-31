@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar() {
+export default function Navbar(props) {
   const classes = useStyles();
 
   const history = useHistory();
@@ -56,7 +56,7 @@ export default function ButtonAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Apartment Renting
+            Apartment Renting {props.title ? ` - ${props.title}` : ""}
           </Typography>
           {localStorage.getItem("user") ? roleRoutes : authRoutes}
         </Toolbar>

@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import OwnerTable from "../components/OwnerTable";
 import EditDialog from "../components/EditDialog";
 import DeleteDialog from "../components/DeleteDialog";
+import Loading from "../components/Loading";
 import { Button, Container } from "@material-ui/core";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -22,6 +23,7 @@ class Owner extends Component {
       paid: "",
       paymentID: "",
       deleteIndex: "",
+      loading: true,
     };
   }
   async componentDidMount() {
@@ -51,6 +53,9 @@ class Owner extends Component {
     } catch (error) {
       console.log(error.message);
     }
+    this.setState({
+      loading: !this.state.loading,
+    });
   }
   handleChange = (event) => {
     this.setState({
@@ -128,7 +133,7 @@ class Owner extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar title="Owner" />
         <EditDialog
           handleModal={this.handleModal}
           open={this.state.open}
@@ -154,13 +159,17 @@ class Owner extends Component {
             Lease Apartment
           </Button>
         </Link>
-        <Container maxWidth="xl">
-          <OwnerTable
-            data={this.state.data}
-            handleEdit={this.handleEdit}
-            handleDeleteModal={this.handleDeleteModal}
-          />
-        </Container>
+        {this.state.loading ? (
+          <Loading />
+        ) : (
+          <Container maxWidth="xl">
+            <OwnerTable
+              data={this.state.data}
+              handleEdit={this.handleEdit}
+              handleDeleteModal={this.handleDeleteModal}
+            />
+          </Container>
+        )}
       </div>
     );
   }

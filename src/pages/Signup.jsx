@@ -49,7 +49,7 @@ export default function Signup() {
   const [user_email, setUserEmail] = useState("");
   const [user_password, setUserPassword] = useState("");
   const [user_type, setUserType] = useState("");
-  const [user_pincode, setUserPincode] = useState(0);
+  const [user_pincode, setUserPincode] = useState("");
   const [user_contact, setUserContact] = useState("");
   const [user_address, setUserAddress] = useState("");
 

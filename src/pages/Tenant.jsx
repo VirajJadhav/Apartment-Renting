@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../components/Navbar";
 import TenantCard from "../components/TenantCard";
+import Loading from "../components/Loading";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
@@ -12,6 +13,7 @@ class Tenant extends Component {
       buildingData: {},
       tenant_info: {},
       ownerData: {},
+      loading: true,
     };
   }
   async componentDidMount() {
@@ -73,18 +75,27 @@ class Tenant extends Component {
       data,
       tenant_info,
       ownerData,
+      loading: !this.state.loading,
     });
   }
   render() {
     return (
       <div>
-        <Navbar />
-        <TenantCard
-          data={this.state.data}
-          ownerData={this.state.ownerData}
-          buildingData={this.state.buildingData}
-          tenant_info={this.state.tenant_info}
-        />
+        <Navbar title="Tenant" />
+        {this.state.loading ? (
+          <div className="mt-5 pt-5">
+            <Loading />
+          </div>
+        ) : (
+          <div className="mt-4">
+            <TenantCard
+              data={this.state.data}
+              ownerData={this.state.ownerData}
+              buildingData={this.state.buildingData}
+              tenant_info={this.state.tenant_info}
+            />
+          </div>
+        )}
       </div>
     );
   }

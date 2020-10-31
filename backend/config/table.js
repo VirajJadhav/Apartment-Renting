@@ -1,6 +1,6 @@
 const Tables = {
   user:
-    "CREATE TABLE IF NOT EXISTS user ( user_email varchar(255) NOT NULL, user_password varchar(255), user_type char(1), primary key (user_email) )",
+    "CREATE TABLE IF NOT EXISTS user ( user_email varchar(255) NOT NULL, user_password char(60), user_type char(1), primary key (user_email) )",
   owner:
     "CREATE TABLE IF NOT EXISTS owner ( owner_email varchar(255) NOT NULL, owner_name varchar(25), owner_contact varchar(10), owner_street varchar(255), owner_pincode varchar(6), PRIMARY KEY (owner_email), FOREIGN KEY (owner_email) REFERENCES user(user_email) ON DELETE CASCADE )",
   tenant:
