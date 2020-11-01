@@ -46,7 +46,7 @@ function TenantCard(props) {
                     subheader={`Start Date: ${
                       data.start_date === undefined
                         ? "Not Assigned"
-                        : data.start_date
+                        : String(data.start_date).split("T")[0]
                     }`}
                   />
                   <CardHeader
@@ -55,7 +55,7 @@ function TenantCard(props) {
                     subheader={`Due Date: ${
                       data.due_date === undefined
                         ? "Not Assigned"
-                        : data.due_date
+                        : String(data.due_date).split("T")[0]
                     }`}
                   />
                   <CardContent className="p-1 pl-2">
