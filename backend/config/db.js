@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "ApartmentRent",
+  database: "ApartmentRent", // line to comment and uncomment according to readme file
   multipleStatements: true,
 });
 
@@ -15,6 +15,7 @@ connection.connect(function (error) {
   console.log("Connected to database !");
 });
 
+// function to comment and uncomment according to readme file (create database query lines)
 // connection.query("CREATE DATABASE IF NOT EXISTS ApartmentRent", function (
 //   error,
 //   result
