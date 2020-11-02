@@ -9,8 +9,8 @@ class Tenant extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {},
-      buildingData: {},
+      data: [],
+      buildingData: [],
       tenant_info: {},
       ownerData: {},
       loading: true,
@@ -36,7 +36,9 @@ class Tenant extends Component {
     }
     try {
       const response = await axios.get(
-        BACKEND_URL + "/building/getInfo/" + String(data.buildingID)
+        BACKEND_URL +
+          "/building/getConnectedBuildingInfo/" +
+          String(tenant_email)
       );
       if (!response.data.error) {
         buildingData = response.data.result;
@@ -59,8 +61,9 @@ class Tenant extends Component {
       console.log(error.message);
     }
     try {
+      // let ownerEmail = data.map((d, index) => d.owner_email);
       const response = await axios.get(
-        BACKEND_URL + "/owner/getOwnerInfo/" + String(data.owner_email)
+        BACKEND_URL + "/owner/getOwnerInfo/" + data[0].owner_email
       );
       if (!response.data.error) {
         ownerData = response.data.result;
@@ -88,12 +91,28 @@ class Tenant extends Component {
           </div>
         ) : (
           <div className="mt-4">
-            <TenantCard
-              data={this.state.data}
-              ownerData={this.state.ownerData}
-              buildingData={this.state.buildingData}
-              tenant_info={this.state.tenant_info}
-            />
+            {this.state.data.length === 0 ? (
+              <TenantCard
+                data={this.state.data}
+                ownerData={this.state.ownerData}
+                buildingData={this.state.buildingData}
+                tenant_info={this.state.tenant_info}
+              />
+            ) : (
+              this.state.data.map((data, index) => {
+                return (
+                  <div index={index} className="mb-4">
+                    <TenantCard
+                      index={index}
+                      data={data}
+                      ownerData={this.state.ownerData}
+                      buildingData={this.state.buildingData[index]}
+                      tenant_info={this.state.tenant_info}
+                    />
+                  </div>
+                );
+              })
+            )}
           </div>
         )}
       </div>

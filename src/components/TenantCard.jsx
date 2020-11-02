@@ -14,7 +14,7 @@ function TenantCard(props) {
   const tenantInfo = props.tenant_info;
   const data = props.data;
   return (
-    <div>
+    <div index={props.index}>
       <div className="container-sm mt-4">
         <Grid container>
           <Grid item xs={12}>
@@ -63,6 +63,14 @@ function TenantCard(props) {
                       <Grid spacing={2} container item xs={12} className="mb-2">
                         <Grid item xs={12} md={6}>
                           <Typography variant="body1">
+                            <strong>Building Name</strong> :{" "}
+                            {buildingData.building_name === undefined
+                              ? "Not Assigned"
+                              : buildingData.building_name}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Typography variant="body1">
                             <strong>Owner Contact</strong> :{" "}
                             {ownerData.owner_contact === undefined
                               ? "Not Assigned"
@@ -81,10 +89,10 @@ function TenantCard(props) {
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <Typography variant="body1">
-                            <strong>Rent Amount</strong> :{" "}
-                            {data.rent_amount === undefined
+                            <strong>Flat Number</strong> :{" "}
+                            {data.flat_number === undefined
                               ? "Not Assigned"
-                              : data.rent_amount + " /-"}
+                              : data.flat_number}
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -93,6 +101,22 @@ function TenantCard(props) {
                             {buildingData.building_pincode === undefined
                               ? "Not Assigned"
                               : buildingData.building_pincode}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Typography variant="body1">
+                            <strong>Floor Number</strong> :{" "}
+                            {data.floor_number === undefined
+                              ? "Not Assigned"
+                              : data.floor_number}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Typography variant="body1">
+                            <strong>Rent Amount</strong> :{" "}
+                            {data.rent_amount === undefined
+                              ? "Not Assigned"
+                              : data.rent_amount + " /-"}
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={8}>

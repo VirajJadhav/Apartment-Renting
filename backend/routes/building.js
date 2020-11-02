@@ -33,6 +33,26 @@ router.route("/getInfo/:buildingID").get(async (req, res) => {
   }
 });
 
+router
+  .route("/getConnectedBuildingInfo/:tenant_email")
+  .get(async (req, res) => {
+    const tenant_email = String(req.params.tenant_email);
+    try {
+      await connection.query(
+        `select building.building_name, building.building_street, building.building_pincode from flats inner join building where flats.tenant_email="${tenant_email}"`,
+        function (error, result) {
+          if (error)
+            return res.status(500).json({ result: error.message, error: true });
+          let data = result;
+          return res.status(200).json({ result: data, error: false });
+        }
+      );
+    } catch (error) {
+      console.log(error.message);
+      return res.status(400).json({ result: error.message, error: true });
+    }
+  });
+
 router.route("/insertInfo").post(async (req, res) => {
   const {
     building_name,
