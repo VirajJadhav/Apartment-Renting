@@ -106,7 +106,7 @@ router.route("/signup").post(async (req, res) => {
             .json({ result: "User registered !", error: false });
         } else {
           return res.status(200).json({
-            result: "User with this email already exits !",
+            result: "User with this email already exists !",
             error: true,
           });
         }

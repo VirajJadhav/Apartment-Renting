@@ -52,7 +52,13 @@ export default function LForm(props) {
                 fullWidth
                 onChange={props.handleChangeAutoComplete}
                 renderInput={(params) => (
-                  <TextField {...params} label="Tenants" variant="outlined" />
+                  <TextField
+                    {...params}
+                    label="Tenants"
+                    variant="outlined"
+                    error={props.errorTenant}
+                    helperText={props.errorTenant ? props.helperField : ""}
+                  />
                 )}
               />
             </div>
@@ -79,6 +85,10 @@ export default function LForm(props) {
                         {...params}
                         label="Building Name"
                         variant="outlined"
+                        error={props.errorBuilding}
+                        helperText={
+                          props.errorBuilding ? props.helperField : ""
+                        }
                       />
                     )}
                   />
@@ -93,6 +103,8 @@ export default function LForm(props) {
                     required
                     onChange={props.handleChange}
                     value={props.floor_number}
+                    error={props.errorFloorNumber}
+                    helperText={props.errorFloorNumber ? props.helperField : ""}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -108,6 +120,8 @@ export default function LForm(props) {
                     required
                     onChange={props.handleChange}
                     value={props.flat_number}
+                    error={props.errorFlatNumber}
+                    helperText={props.errorFlatNumber ? props.helperField : ""}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -121,6 +135,8 @@ export default function LForm(props) {
                     type="number"
                     fullWidth
                     required
+                    error={props.errorRentAmount}
+                    helperText={props.errorRentAmount ? props.helperField : ""}
                     onChange={props.handleChange}
                     value={props.rent_amount}
                     InputLabelProps={{

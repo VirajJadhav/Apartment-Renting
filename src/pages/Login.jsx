@@ -41,16 +41,43 @@ export default function Login() {
   const history = useHistory();
 
   const [email, setEmail] = useState("");
+
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [emailText, setEmailText] = useState("");
+  const [passText, setPassText] = useState("");
+  const [errorPass, setErrorPass] = useState(false);
+
   const [password, setPassword] = useState("");
 
   const handleChange = (event) => {
-    if (event.target.name === "email") setEmail(event.target.value);
-    else if (event.target.name === "password") setPassword(event.target.value);
+    if (event.target.name === "email") {
+      if (errorEmail) {
+        setEmailText("");
+        setErrorEmail((prevState) => !prevState);
+      }
+      setEmail(event.target.value);
+    } else if (event.target.name === "password") {
+      if (errorPass) {
+        setPassText("");
+        setErrorPass((prevState) => !prevState);
+      }
+      setPassword(event.target.value);
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     event.persist();
+    if (email === "") {
+      setEmailText("This field is required !");
+      setErrorEmail((prevState) => !prevState);
+      return;
+    }
+    if (password === "") {
+      setPassText("This field is required !");
+      setErrorPass((prevState) => !prevState);
+      return;
+    }
     const data = {
       user_email: email,
       user_password: password,
@@ -64,7 +91,14 @@ export default function Login() {
           if (res.result.user_type === "O") history.push("/owner");
           else if (res.result.user_type === "T") history.push("/tenant");
         } else {
-          alert(res.result);
+          if (res.result.includes("Invalid")) {
+            setPassText(res.result);
+            setErrorPass((prevState) => !prevState);
+          } else {
+            setEmailText(res.result);
+            setErrorEmail((prevState) => !prevState);
+          }
+          // alert(res.result);
         }
       })
       .catch((error) => {
@@ -97,6 +131,8 @@ export default function Login() {
               onChange={handleChange}
               autoComplete="email"
               autoFocus
+              error={errorEmail}
+              helperText={emailText}
             />
             <TextField
               variant="outlined"
@@ -109,6 +145,8 @@ export default function Login() {
               type="password"
               onChange={handleChange}
               autoComplete="current-password"
+              error={errorPass}
+              helperText={passText}
             />
             <Button
               fullWidth

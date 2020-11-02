@@ -47,6 +47,8 @@ export default function BForm(props) {
                 onChange={props.handleChange}
                 label="Building Name"
                 autoFocus
+                error={props.errorBuildingName}
+                helperText={props.errorBuildingName ? props.helperField : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -59,6 +61,8 @@ export default function BForm(props) {
                 value={props.total_floors}
                 onChange={props.handleChange}
                 label="Total Floors"
+                error={props.errorTotalFloors}
+                helperText={props.errorTotalFloors ? props.helperField : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -71,6 +75,8 @@ export default function BForm(props) {
                 value={props.flats_each}
                 onChange={props.handleChange}
                 label="Flats per floor"
+                error={props.errorFlatsEach}
+                helperText={props.errorFlatsEach ? props.helperField : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -84,6 +90,8 @@ export default function BForm(props) {
                 rows={3}
                 required
                 variant="outlined"
+                error={props.errorBuildingStreet}
+                helperText={props.errorBuildingStreet ? props.helperField : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -99,6 +107,8 @@ export default function BForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                error={props.errorBuildingPincode}
+                helperText={props.errorBuildingPincode ? props.helperField : ""}
               />
             </Grid>
           </Grid>

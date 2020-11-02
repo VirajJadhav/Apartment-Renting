@@ -46,35 +46,72 @@ export default function Signup() {
   const history = useHistory();
 
   const [user_name, setUserName] = useState("");
+  const [errorUserName, setErrorUserName] = useState(false);
   const [user_email, setUserEmail] = useState("");
+  const [errorUserEmail, setErrorUserEmail] = useState(false);
   const [user_password, setUserPassword] = useState("");
+  const [errorUserPassword, setErrorUserPassword] = useState(false);
   const [user_type, setUserType] = useState("");
+  const [errorUserType, setErrorUserType] = useState(false);
   const [user_pincode, setUserPincode] = useState("");
+  const [errorUserPincode, setErrorUserPincode] = useState(false);
   const [user_contact, setUserContact] = useState("");
+  const [errorUserContact, setErrorUserContact] = useState(false);
   const [user_address, setUserAddress] = useState("");
+  const [errorUserAddress, setErrorUserAddress] = useState(false);
+
+  const [helperField, setHelperField] = useState("");
 
   const handleChange = (event) => {
     const value = event.target.value;
     switch (event.target.name) {
       case "user_name":
+        if (errorUserName) {
+          setHelperField("");
+          setErrorUserName((prevState) => !prevState);
+        }
         setUserName(value);
         break;
       case "user_type":
+        if (errorUserType) {
+          setHelperField("");
+          setErrorUserType((prevState) => !prevState);
+        }
         setUserType(value);
         break;
       case "user_pincode":
+        if (errorUserPincode) {
+          setHelperField("");
+          setErrorUserPincode((prevState) => !prevState);
+        }
         if (value >= 0) setUserPincode(value);
         break;
       case "user_contact":
+        if (errorUserContact) {
+          setHelperField("");
+          setErrorUserContact((prevState) => !prevState);
+        }
         setUserContact(value);
         break;
       case "user_address":
+        if (errorUserAddress) {
+          setHelperField("");
+          setErrorUserAddress((prevState) => !prevState);
+        }
         setUserAddress(value);
         break;
       case "email":
+        if (errorUserEmail) {
+          setHelperField("");
+          setErrorUserEmail((prevState) => !prevState);
+        }
         setUserEmail(value);
         break;
       case "password":
+        if (errorUserPassword) {
+          setHelperField("");
+          setErrorUserPassword((prevState) => !prevState);
+        }
         setUserPassword(value);
         break;
       default:
@@ -85,6 +122,41 @@ export default function Signup() {
   const handleSubmit = (event) => {
     event.preventDefault();
     event.persist();
+    if (user_name === "") {
+      setHelperField("This field is required !");
+      setErrorUserName((prevState) => !prevState);
+      return;
+    }
+    if (user_type === "") {
+      setHelperField("This field is required !");
+      setErrorUserType((prevState) => !prevState);
+      return;
+    }
+    if (user_address === "") {
+      setHelperField("This field is required !");
+      setErrorUserAddress((prevState) => !prevState);
+      return;
+    }
+    if (user_pincode === "") {
+      setHelperField("This field is required !");
+      setErrorUserPincode((prevState) => !prevState);
+      return;
+    }
+    if (user_contact === "") {
+      setHelperField("This field is required !");
+      setErrorUserContact((prevState) => !prevState);
+      return;
+    }
+    if (user_email === "") {
+      setHelperField("This field is required !");
+      setErrorUserEmail((prevState) => !prevState);
+      return;
+    }
+    if (user_password === "") {
+      setHelperField("This field is required !");
+      setErrorUserPassword((prevState) => !prevState);
+      return;
+    }
     const data = {
       user_email,
       user_password,
@@ -102,7 +174,9 @@ export default function Signup() {
         if (!res.error) {
           history.push("/");
         } else {
-          alert(res.result);
+          setHelperField(res.result);
+          setErrorUserEmail((prevState) => !prevState);
+          // alert(res.result);
         }
       })
       .catch((error) => {
@@ -135,6 +209,8 @@ export default function Signup() {
                   onChange={handleChange}
                   label="Full Name"
                   autoFocus
+                  error={errorUserName}
+                  helperText={errorUserName ? helperField : ""}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -146,6 +222,7 @@ export default function Signup() {
                   value={user_type}
                   onChange={handleChange}
                   helperText="Please select your role"
+                  error={errorUserType}
                 >
                   <MenuItem value="O">Owner</MenuItem>
                   <MenuItem value="T">Tenant</MenuItem>
@@ -162,6 +239,8 @@ export default function Signup() {
                   rows={3}
                   required
                   variant="outlined"
+                  helperText={errorUserAddress ? helperField : ""}
+                  error={errorUserAddress}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -177,6 +256,8 @@ export default function Signup() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  helperText={errorUserPincode ? helperField : ""}
+                  error={errorUserPincode}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -188,6 +269,8 @@ export default function Signup() {
                   value={user_contact}
                   onChange={handleChange}
                   label="Contact Number"
+                  helperText={errorUserContact ? helperField : ""}
+                  error={errorUserContact}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -200,6 +283,8 @@ export default function Signup() {
                   value={user_email}
                   onChange={handleChange}
                   autoComplete="email"
+                  helperText={errorUserEmail ? helperField : ""}
+                  error={errorUserEmail}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -213,6 +298,8 @@ export default function Signup() {
                   value={user_password}
                   onChange={handleChange}
                   autoComplete="current-password"
+                  helperText={errorUserPassword ? helperField : ""}
+                  error={errorUserPassword}
                 />
               </Grid>
             </Grid>

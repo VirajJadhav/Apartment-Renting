@@ -24,6 +24,7 @@ class Owner extends Component {
       paymentID: "",
       deleteIndex: "",
       loading: true,
+      editIndex: "",
     };
   }
   async componentDidMount() {
@@ -75,6 +76,7 @@ class Owner extends Component {
       rent_amount: reqData.rent_amount,
       paid: reqData.paid,
       paymentID: reqData.paymentID,
+      editIndex: index,
     });
   };
   handleDeleteModal = (index) => {
@@ -89,6 +91,14 @@ class Owner extends Component {
   };
   handleDeleteSubmit = () => {
     const flatID = this.state.allData[this.state.deleteIndex].flatID;
+    let data = [...this.state.data];
+    let allData = [...this.state.allData];
+    data.splice(this.state.deleteIndex, 1);
+    allData.splice(this.state.deleteIndex, 1);
+    this.setState({
+      data,
+      allData,
+    });
     axios
       .post(BACKEND_URL + "/flat/deleteRentRelation", { flatID })
       .then((response) => {
@@ -114,6 +124,19 @@ class Owner extends Component {
   modalSubmit = () => {
     const req_due_date = this.state.due_date.substring(0, 10);
     const paymentID = Number(this.state.paymentID);
+    let updateData = [...this.state.data];
+    let allData = [...this.state.allData];
+    updateData[this.state.editIndex][4] =
+      this.state.paid === "Y" ? "Yes" : "No";
+    updateData[this.state.editIndex][3] = this.state.rent_amount;
+    updateData[this.state.editIndex][2] = req_due_date;
+    allData[this.state.editIndex].paid = this.state.paid;
+    allData[this.state.editIndex].rent_amount = this.state.rent_amount;
+    allData[this.state.editIndex].due_date = req_due_date;
+    this.setState({
+      data: updateData,
+      allData,
+    });
     const data = {
       paid: this.state.paid,
       rent_amount: Number(this.state.rent_amount),
