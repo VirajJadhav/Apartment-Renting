@@ -2,7 +2,7 @@
 
 This is a mini project is build on mysql, express, react, nodejs (just to be familar with mysql connection and handling sql queries with express nodejs as backend and react for frontend along with mysql as our database).
 
-This project is based on aparment renting system between owner and tenant, where in owner can lease his / her apartment to tenant on fixed rent with decided period.
+This project is based on apartment renting system between owner and tenant, where in owner can lease his / her apartment to tenant on fixed rent with decided period.
 
 ## This project has mainly two views apart from login and signup view
 
